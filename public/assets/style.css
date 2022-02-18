@@ -1,0 +1,23 @@
+.box {
+    display: flex;
+    width: 80%;
+    margin: auto;
+    
+}
+.box > div:first-child {
+    flex-grow: 1;
+    flex-basis: 0!important;
+    
+
+    
+}
+.box > div:last-child{
+    flex-grow: 3;
+    flex-basis: 0!important;
+    
+
+}
+
+.subtypes{
+    display: none;
+}
