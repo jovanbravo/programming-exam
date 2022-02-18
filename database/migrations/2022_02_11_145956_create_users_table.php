@@ -15,12 +15,19 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('type_id')->unsigned()->nullable();
+            $table->bigInteger('subtype_id')->unsigned()->nullable();
+            $table->bigInteger('subsubtype_id')->unsigned()->nullable();
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->foreign('type_id')->references('id')->on('types');
+            $table->foreign('subtype_id')->references('id')->on('types');
+            
+      
         });
     }
 

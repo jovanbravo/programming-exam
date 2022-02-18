@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Livewire\HomeComponent;
+use App\Http\Livewire\LoginComponent;
+use App\Http\Livewire\RegisterComponent;
+use App\Http\Livewire\ResultComponent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,10 +18,21 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/', HomeComponent::class);
+
+Route::prefix('auth')->group(function () {
+    Route::post('/register', [AuthController::class, 'register'])->name('auth_register');
+    Route::get('/login', [AuthController::class, 'login'])->name('auth_login');
+    Route::group(['middleware' => ['auth']], function () {
+        Route::get('/logout', [AuthController::class, 'logout'])->name('auth_logout');
+    });
 });
 
-Auth::routes();
+Route::middleware('guest')->group(function () {
+    Route::any('/login', LoginComponent::class)->name('login');
+    Route::any('/register', RegisterComponent::class)->name('register');
+});
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::middleware('auth')->group(function () {
+    Route::get('/home', ResultComponent::class)->name('home');
+});
